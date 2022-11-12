@@ -8,8 +8,8 @@ public class Automat {
 	
 	Automat(String nume_fis) throws Exception {
 		BufferedReader buf = new BufferedReader (new FileReader(nume_fis));
-		this.st_init = buf.readLine();
-		String st_finale_str = buf.readLine();
+		this.st_init = buf.readLine();	
+		String st_finale_str = buf.readLine();		
 		this.st_finale = st_finale_str.split(" ");
 		
 		while(true) {
@@ -21,8 +21,11 @@ public class Automat {
 				this.lt.adaugaTranzitie(tr);
 			}
 		}
-		buf.close();
+		lt.afiseazaAlfabet();
+		buf.close();	
 	}
+	
+	
 	
 	public String toString() {
 		String iesire = "";
@@ -35,10 +38,24 @@ public class Automat {
 		return iesire;
 	}
 	
+		
 	boolean analizeazaCuvant(String sir_intrare) {
-		return true;
-	}
-	
-	
-	
+		String CT = st_init;
+		char[] arr =sir_intrare.toCharArray();
+		for (int i=0;i<arr.length;i++) {
+			if (lt.gasesteTranzitie(CT, arr[i])!=null) {
+				CT = lt.gasesteTranzitie(CT, arr[i]).spuneStSfarsit();
+				
+			}
+			else {
+				return false;
+				}			
+			}
+		for (int i=0;i<st_finale.length;i++) {
+			if (CT.equals(st_finale[i])) {
+				return true;
+			}								
+		}
+		return false;
+	}	
 }
